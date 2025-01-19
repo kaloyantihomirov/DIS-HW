@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #include <iomanip>  // For setting precision in output
 
 using namespace std;
@@ -24,20 +25,26 @@ double directLimit(double lambda)
 
 void printSequenceTerms(double lambda, const vector<int>& indices)
 {
-    double x = lambda;
+    vector<int> sortedIndices = indices;
+    std::sort(sortedIndices.begin(), sortedIndices.end());
+
+    double currentTerm = lambda;
+    int lastIndex = 1; 
 
     cout << fixed << setprecision(12);
 
-    for (int n : indices)
+    for (int n : sortedIndices)
     {
-        double term = x;
-        for (int i = 1; i < n; ++i)
+        while (lastIndex < n)
         {
-            term = F(term);
+            currentTerm = F(currentTerm);
+            lastIndex++;
         }
-        cout << "a_" << n << " = " << term << endl;
+
+        cout << "a_" << n << " = " << currentTerm << endl;
     }
 }
+
 
 int main()
 {
